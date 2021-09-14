@@ -13,16 +13,13 @@ public class D {
     bufferedReader.close();
     int maxLength = 0;
     int wordIndex = 0;
-    int wordsL = words.length;
     for (int i = 0; i < words.length; i++) {
       if (words[i].length() > maxLength) {
         maxLength = words[i].length();
         wordIndex = i;
       }
     }
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(words[wordIndex]).append("\n").append(maxLength);
-    System.out.println(stringBuilder);
+    System.out.println(words[wordIndex] + "\n" + maxLength);
   }
 
 }
