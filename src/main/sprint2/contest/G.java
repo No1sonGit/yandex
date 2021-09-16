@@ -1,4 +1,4 @@
-package main.sprint2.contest.g;
+package main.sprint2.contest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
