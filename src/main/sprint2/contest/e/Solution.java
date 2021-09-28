@@ -1,8 +1,5 @@
 package main.sprint2.contest.e;
 
-import java.util.LinkedList;
-import main.sprint1.contest.L;
-
 class Node<V> {
     public V value;  
     public Node<V> next;  
