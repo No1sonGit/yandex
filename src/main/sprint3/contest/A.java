@@ -18,8 +18,8 @@ public class A {
     if (n == 0) {
       System.out.println(prefix);
     } else {
-      genBraces(n - 1, prefix + ")");
       genBraces(n - 1, prefix + "(");
+      genBraces(n - 1, prefix + ")");
     }
   }
 

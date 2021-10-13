@@ -24,26 +24,25 @@ public class N {
 
     Arrays.sort(clumbs);
 
-    System.out.println(Arrays.toString(clumbs));
-
-    StringBuilder stringBuilder = new StringBuilder();
-
-    int oldBegin = clumbs[0].getX();
-    int oldEnd = clumbs[0].getY();
-
-    stringBuilder.append("\n").append(oldBegin).append(" ");
+    int begin = clumbs[0].getX();
+    int end = 0;
 
     for (int i = 1; i < clumbs.length; i++) {
-      int newBegin = clumbs[i - 1].getX();
-      int newEnd = clumbs[i].getY();
-
-      if (newBegin >= oldEnd) {
-        stringBuilder.append(oldEnd).append("\n").append(newBegin).append(" ");
+      begin = Math.min(begin, clumbs[i - 1].getX());
+      end = Math.max(end, clumbs[i - 1].getY());
+      if (clumbs[i].getX() > end) {
+        System.out.println(begin + " " + end);
+        if (i != clumbs.length - 1) {
+          begin = clumbs[i].getY();
+        } else {
+          begin = clumbs[i].getX();
+          end = clumbs[i].getY();
+        }
       }
-
     }
 
-    System.out.println(stringBuilder);
+    end = Math.max(end, clumbs[clumbs.length - 1].getY());
+    System.out.println(begin + " " + end);
 
   }
 
@@ -66,7 +65,11 @@ public class N {
 
     @Override
     public int compareTo(Coordinates o) {
-      return Integer.compare(this.x + this.y, o.x + o.y);
+      if (x != o.x)
+        return x - o.x;
+      if (y != o.y)
+        return o.y - y;
+      return 0;
     }
 
     @Override

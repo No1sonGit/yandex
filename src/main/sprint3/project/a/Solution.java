@@ -1,38 +1,43 @@
 package main.sprint3.project.a;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StreamTokenizer;
+/**
+ -- ПРИНЦИП РАБОТЫ --
 
+ Принцип работы данного алгоритма заключается в модифицированном бинарном поиске,
+ который позволяет нам искать искомый элемент в частично отсортированном массиве.
+
+ Мы также ищем искомый элемент в одной из двух частей массива, но у нас добавляются следующие условия:
+
+ 1. Если левый элемент массива меньше, либо равен центральному, то:
+    Если наш искомый элемент больше левого, либо меньше центрального, то мы рекурсивно запускаем
+    бинарный поиск по левой части массива, иначе по правой части
+ 2. Если искомый элемент больше центрального и меньше правого, то рекурсивно запускаем бинарный
+    поиск по правой стороне, иначе по левой стороне
+
+ И так до тех пор, пока не найдем искомый элемент (в центральной позиции)
+
+
+ -- ДОКАЗАТЕЛЬСТВО КОРРЕКТНОСТИ --
+
+ Данный алгоритм корректно работает только в том случаем, если у нас нет часто дублирующихся элементов
+ Корректность обеспечивается тем, что мы всегда сравниваем искомый элемент с элементами в начале, конце
+ и середине массива, исходя из этого понимаем, в какой части нам следует делать поиск
+
+ -- ВРЕМЕННАЯ СЛОЖНОСТЬ --
+ Временная сложность данного алгоритма составляет O(logn)
+
+ -- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ --
+ Пространственная сложность данного алгоритма составляет O(logn)
+ Дополнительная память использовуется только для рекурсивных вызовов (память стека)
+ */
+
+//53763167
 public class Solution {
 
     public static int brokenSearch(int[] arr, int k) {
         if (arr.length == 1)
             return arr[0] == k ? 0 : -1;
-
-        if (arr.length == 2) {
-            if (arr[0] == k)
-                return 0;
-            if (arr[arr.length - 1] == k)
-                return arr.length - 1;
-            return  -1;
-        } else {
-            if (arr[0] == k)
-                return 0;
-            if (arr[arr.length - 1] == k)
-                return arr.length - 1;
-        }
-
-        int pivot = findPivot(arr, 0, arr.length - 1);
-
-        if (pivot == -1)
-            return binarySearch(arr, k, 0, arr.length - 1);
-        if (arr[pivot] == k)
-            return pivot;
-        if (arr[0] <= k)
-            return binarySearch(arr, k, 0, pivot - 1);
-        return binarySearch(arr, k, pivot + 1, arr.length - 1);
+        return binarySearch(arr, k, 0, arr.length - 1);
     }
 
     private static void test() {
@@ -41,54 +46,28 @@ public class Solution {
         System.out.println(result);
     }
 
-    static int findPivot(int[] arr, int left, int right) {
-        if (right < left)
-            return -1;
-        if (right == left)
-            return left;
-
-        int mid = (left + right) / 2;
-
-        if (arr[mid] > arr[mid + 1])
-            return mid;
-        if (arr[mid] < arr[mid - 1])
-            return (mid - 1);
-        if (arr[left] >= arr[mid])
-            return findPivot(arr, left, mid - 1);
-
-        return findPivot(arr, mid + 1, right);
-    }
-
     private static int binarySearch(int[] arr, int k, int left, int right) {
         if (right <= left)
             return -1;
+        if (arr[left] == k)
+            return left;
+        if (arr[right] == k)
+            return right;
 
         int mid = (left + right) / 2;
 
         if (arr[mid] == k)
             return mid;
 
-        if (k < arr[mid])
-            return binarySearch(arr, k, left, mid);
-        else
+        if (arr[left] <= arr[mid]) {
+            if (k > arr[left] && k < arr[mid])
+                return binarySearch(arr, k, left, mid - 1);
             return binarySearch(arr, k, mid + 1, right);
-    }
-
-    public static void main(String[] args) throws IOException {
-        StreamTokenizer streamTokenizer = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
-        streamTokenizer.nextToken();
-        int size = (int) streamTokenizer.nval;
-        streamTokenizer.nextToken();
-        int k = (int) streamTokenizer.nval;
-
-        int[] nums = new int[size];
-
-        for (int i = 0; i < size; i++) {
-            streamTokenizer.nextToken();
-            nums[i] = (int) streamTokenizer.nval;
         }
 
-        System.out.println(brokenSearch(nums, k));
+        if (k > arr[mid] && k < arr[right])
+            return binarySearch(arr, k, mid + 1, right);
 
+        return binarySearch(arr, k, left, mid - 1);
     }
 }
