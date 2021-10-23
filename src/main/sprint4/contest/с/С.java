@@ -32,14 +32,12 @@ public class С {
 
     int n = chars.length;
 
-    for (int i = chars.length - 1; i > 0; i--) {
+    for (int i = 0; i < chars.length; i++) {
+      n = n - 1;
       result += BigInteger.valueOf(chars[i])
-          .multiply(BigInteger.valueOf((long) Math.pow(q, i))).mod(BigInteger.valueOf(mod)).longValueExact();
+          .multiply(BigInteger.valueOf((long) Math.pow(q, n))).mod(BigInteger.valueOf(mod)).longValueExact();
       map.put(i + 1, result);
     }
-
-    long l = map.get(5) + map.get(8);
-    System.out.println(l % mod);
 
     System.out.println(map);
 
