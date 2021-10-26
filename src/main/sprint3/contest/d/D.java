@@ -1,12 +1,10 @@
-package main.sprint3.contest;
+package main.sprint3.contest.d;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public class D {
 
@@ -31,15 +29,22 @@ public class D {
     }
 
     Arrays.sort(children);
+    Arrays.sort(cookies);
 
-    int counter = 0;
+    int result = 0;
+    int counter = cookiesSize - 1;
 
-    for (int i = 0; i < cookiesSize; i++) {
-      if (Arrays.binarySearch(children, cookies[i]) >= 0)
-        counter++;
+
+    for (int i = childrenSize - 1; i >= 0; i--) {
+      if (children[i] <= cookies[counter]) {
+        result++;
+        counter--;
+      }
+      if (counter == -1)
+        break;
     }
 
-    System.out.println(counter);
+    System.out.println(result);
   }
 
 }

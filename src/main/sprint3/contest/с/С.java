@@ -3,35 +3,29 @@ package main.sprint3.contest.с;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 
 public class С {
 
   public static void main(String[] args) throws IOException {
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    char[] a = reader.readLine().toCharArray();
-    char[] b = reader.readLine().toCharArray();
+    String a = reader.readLine();
+    String b = reader.readLine();
     reader.close();
 
-    Map<Character, Integer> map = new HashMap<>();
+    System.out.println(isSubstring(a, b) ? "True" : "False");
 
-    for (int i = 0; i < b.length; i++) {
+  }
 
-      if (i <= a.length - 1) {
-        if (map.containsKey(a[i])) {
-          map.put(a[i], map.get(a[i]) + 1);
-        } else {
-          map.put(a[i], 0);
-        }
-      }
+  static boolean isSubstring(String template, String str) {
+    int i = 0;
 
-      if (map.containsKey(b[i])) {
-        map.put(b[i], map.get(b[i]) - 1);
-      }
+    for (int j = 0; j < str.length(); j++) {
+      if (i == template.length())
+        return true;
+      if (str.charAt(j) == template.charAt(i))
+        i++;
     }
 
-    System.out.println(map);
-
+    return i == template.length();
   }
 }
