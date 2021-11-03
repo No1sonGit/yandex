@@ -3,8 +3,6 @@ package main.sprint4.contest.e;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
 
 public class E {
 
@@ -13,24 +11,17 @@ public class E {
     String word = reader.readLine();
     reader.close();
 
-    Set<Character> set = new HashSet<>();
-    int counter = 0;
-    int max = 0;
+    int[] positions = new int[256];
+    int result = 0;
+    int prev = 0;
 
     for (int i = 0; i < word.length(); i++) {
-      if (set.contains(word.charAt(i))) {
-        max = Math.max(max, counter);
-        counter = 0;
-        set.clear();
-      } else {
-        set.add(word.charAt(i));
-        counter++;
-      }
+      prev = Math.max(prev, positions[word.charAt(i)]);
+      positions[word.charAt(i)] = i + 1;
+      result = Math.max(result, i + 1 - prev);
     }
 
-    max = Math.max(max, counter);
-
-    System.out.println(max);
+    System.out.println(result);
   }
 
 }
