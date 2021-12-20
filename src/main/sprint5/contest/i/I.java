@@ -31,9 +31,9 @@ public class I {
 
   private static void dfs(Set<String> ret, Set<Integer> path, int[] nums) {
     if (path.size() == nums.length) {
-      StringBuilder sb = new StringBuilder();
+
       for (Integer integer : path) {
-        
+
       }
       return;
     }
