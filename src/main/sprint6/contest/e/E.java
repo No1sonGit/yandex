@@ -8,7 +8,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +18,8 @@ public class E {
   private static Map<Integer, List<Integer>> graph;
 
   public static void main(String[] args) throws IOException {
-    StreamTokenizer tokenizer = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
+    StreamTokenizer tokenizer = new StreamTokenizer(
+        new BufferedReader(new InputStreamReader(System.in)));
 
     tokenizer.nextToken();
     int vertices = (int) tokenizer.nval;
@@ -55,7 +55,12 @@ public class E {
 
     for (int i = 1; i < colors.length; i++) {
       if (colors[i] == -1) {
-        results.add(dfs(i, colors, componentCount));
+        List<Integer> result = new LinkedList<>();
+
+        dfs(i, colors, componentCount, result);
+
+        results.add(result);
+
         componentCount++;
       }
     }
@@ -75,32 +80,19 @@ public class E {
     }
   }
 
-  private static List<Integer> dfs(int startVertex, int[] colors, int componentCount) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    stack.push(startVertex);
+  private static void dfs(int vertex, int[] colors, int componentCount, List<Integer> result) {
+    if (colors[vertex] == -1) {
+      colors[vertex] = componentCount;
+      result.add(vertex);
 
-    List<Integer> result = new LinkedList<>();
+      List<Integer> edges = graph.get(vertex);
 
-    while (!stack.isEmpty()) {
-      int vertex = stack.pop();
-
-      if (colors[vertex] == -1) {
-        stack.push(vertex);
-
-        List<Integer> edges = graph.get(vertex);
-
-        for (Integer edge : edges) {
-          if (colors[edge] == -1) {
-            stack.push(edge);
-          }
+      for (Integer edge : edges) {
+        if (colors[edge] == -1) {
+          dfs(edge, colors, componentCount, result);
         }
-
-        colors[vertex] = componentCount;
-        result.add(vertex);
       }
     }
-
-    return result;
   }
 
 }

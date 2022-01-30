@@ -7,6 +7,7 @@ import java.io.StreamTokenizer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -48,13 +49,11 @@ public class J {
 
   private static void mainTopSort() {
     Deque<Integer> ordered = new ArrayDeque<>();
-    String[] colors = new String[graph.size() + 1];
-
-    Arrays.fill(colors, WHITE);
+    boolean[] visited = new boolean[graph.size() + 1];
 
     for (Integer vertex : graph.keySet()) {
-      if (colors[vertex].equals(WHITE)) {
-        topSort(vertex, ordered, colors);
+      if (!visited[vertex]) {
+        topSort(vertex, ordered, visited);
       }
     }
 
@@ -67,29 +66,17 @@ public class J {
     System.out.print(result);
   }
 
-  private static void topSort(int startVertex, Deque<Integer> ordered, String[] colors) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    stack.push(startVertex);
+  private static void topSort(int vertex, Deque<Integer> ordered, boolean[] visited) {
+    visited[vertex] = true;
 
-    while (!stack.isEmpty()) {
-      int vertex = stack.pop();
+    List<Integer> edges = graph.get(vertex);
 
-      if (colors[vertex].equals(WHITE)) {
-        colors[vertex] = GRAY;
-        stack.push(vertex);
-
-        List<Integer> edges = graph.get(vertex);
-
-        for (Integer edge : edges) {
-          if (colors[edge].equals(WHITE)) {
-            stack.push(edge);
-          }
-        }
-      } else if (colors[vertex].equals(GRAY)) {
-        colors[vertex] = BLACK;
-        ordered.push(vertex);
-      }
+    for (Integer edge : edges) {
+      if (!visited[edge])
+        topSort(edge, ordered, visited);
     }
+
+    ordered.push(vertex);
   }
 
 }

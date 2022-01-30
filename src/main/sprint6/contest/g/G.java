@@ -4,10 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Deque;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,7 +58,7 @@ public class G {
     int startVertex = (int) tokenizer.nval;
 
     bfs(startVertex);
-    shortestPath(startVertex);
+    findLongestPath();
 
   }
 
@@ -71,6 +70,8 @@ public class G {
 
     while (!queue.isEmpty()) {
       int vertex = queue.poll();
+
+      Collections.sort(graph.get(vertex));
 
       for (Integer edge : graph.get(vertex)) {
         if (colors[edge].equals(WHITE)) {
@@ -86,22 +87,32 @@ public class G {
 
   }
 
-  private static void shortestPath(int vertex) {
-    Deque<Integer> stack = new ArrayDeque<>();
+  private static void findLongestPath() {
+    int result = 0;
+    Arrays.fill(colors, WHITE);
+
+    for (Integer vertex : graph.keySet()) {
+      if (colors[vertex].equals(WHITE)) {
+        result = Math.max(result, longestPath(vertex));
+      }
+    }
+
+    System.out.println(result - 1);
+  }
+
+
+  private static int longestPath(int vertex) {
     int currentVertex = vertex;
     int counter = 0;
 
     while (currentVertex != 0) {
-      stack.push(currentVertex);
+      colors[currentVertex] = BLACK;
       currentVertex = prev[currentVertex];
-    }
-
-    while (!stack.isEmpty()) {
-      stack.pop();
       counter++;
     }
 
-    System.out.println(counter);
+    return counter;
   }
 
 }
+
