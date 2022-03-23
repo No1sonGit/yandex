@@ -86,7 +86,6 @@ public class K {
       }
     }
 
-
   }
 
   private static int getMinDistNotVisitedVertex() {
@@ -108,8 +107,8 @@ public class K {
       dist[v.getKey()] = dist[u] + v.getValue();
       prev[v.getKey()] = u;
 
-//      result[v.getKey() - 1][u - 1] = dist[v.getKey()];
-//      result[u - 1][v.getKey() - 1] = dist[v.getKey()];
+      result[v.getKey() - 1][u - 1] = dist[v.getKey()];
+      result[u - 1][v.getKey() - 1] = dist[v.getKey()];
     }
   }
 
